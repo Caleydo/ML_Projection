@@ -24,6 +24,6 @@ if __name__ == '__main__':
     view.plotInput(images, labels, instanceCount)
 
     heatmaps = applyLRP(images, labels, instanceCount)
-    view.plotInput(heatmaps, labels, instanceCount)
+    view.plotActivations(heatmaps, labels, instanceCount)
 
     view.show()
