@@ -1,9 +1,10 @@
 from frontend.data_loader import loadDataSet
 from frontend.plot import View
 from frontend.lrp_executor import applyLRP
-
+from frontend.serialize import serialize
 from sklearn.utils import shuffle
 
+import argparse
 def firstFunctionEver():
     loadData()
 
@@ -11,19 +12,24 @@ def loadData():
     return loadDataSet('MNIST');
 
 if __name__ == '__main__':
-    instanceCount = 100
-    data = loadData()
-    X_train, y_train = data.data[:70000] / 255., data.target[:70000]
-    X_train, y_train = shuffle(X_train, y_train)
+    generate = True
+    if generate:
+        instanceCount = 12
+        data = loadData()
+        X_train, y_train = data.data[:70000] / 255., data.target[:70000]
+        X_train, y_train = shuffle(X_train, y_train)
 
-    images = X_train[:instanceCount]
-    labels = y_train[:instanceCount]
+        images = X_train[:instanceCount]
+        labels = y_train[:instanceCount]
 
-    view = View()
+        view = View()
 
-    view.plotInput(images, labels, instanceCount)
+        view.plotInput(images, labels, instanceCount)
 
-    heatmaps = applyLRP(images, labels, instanceCount)
-    view.plotActivations(heatmaps, labels, instanceCount)
+        heatmaps = applyLRP(images, labels, instanceCount)
+        serialize(images, heatmaps, labels)
+        view.plotActivations(heatmaps, labels, instanceCount)
 
-    view.show()
+        view.show()
+    else:
+        print('load')
