@@ -25,25 +25,25 @@ class View:
                   .reshape(height*nrows, width*ncols))
         return result
 
-    def plotInput(self, images, labels, number):
+    def plotInput(self, images, labels, number, projectionMethod):
         images_reshaped = images.reshape(number, 28, 28)
         images_reshaped = self.gallery(images_reshaped)
 
 
         self.ax1.imshow(images_reshaped, cmap='gray')
 
-        X_transformed = project(images)
+        X_transformed = project(images, projectionMethod)
         plt.prism()
         self.ax2.scatter(X_transformed[:, 0], X_transformed[:, 1], c=labels)
 
-    def plotActivations(self, images, labels, number):
+    def plotActivations(self, images, labels, number, projectionMethod):
         images_reshaped = images.reshape(number, 28, 28)
         images_reshaped = self.gallery(images_reshaped)
 
 
         self.ax3.imshow(images_reshaped, cmap='gray')
 
-        X_transformed = project(images)
+        X_transformed = project(images, projectionMethod)
         plt.prism()
         self.ax4.scatter(X_transformed[:, 0], X_transformed[:, 1], c=labels)
 

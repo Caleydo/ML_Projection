@@ -1,9 +1,9 @@
 from sklearn.datasets import fetch_mldata
-
-def loadDataSet(name):
+import os
+def loadDataSet(name, path):
     dataset = None
     if(name == 'MNIST'):
-        dataset = fetch_mldata('MNIST original', data_home='minst_data')
+        dataset = fetch_mldata('MNIST original', data_home=os.path.join(path, 'minst_data'))
     return dataset
 
 

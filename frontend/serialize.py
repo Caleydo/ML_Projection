@@ -1,4 +1,3 @@
-import csv
 import os
 import json
 
@@ -19,16 +18,20 @@ def createDataFolder(foldername):
     if not os.path.exists(foldername):
         os.makedirs(foldername)
 
-def serialize(images, heatmaps, labels):
+def serialize(images, heatmaps, labels, path):
+    dataFolder = os.path.join(path, foldername)
+    createDataFolder(dataFolder)
+    filepath = os.path.join(dataFolder, filename)
+    print('Writing file: ', filepath)
     if len(images) != len(heatmaps) and len(heatmaps) != len(labels):
         raise ValueError('The dimensions of the input/activities/labels are not compatible')
-    createDataFolder(foldername)
 
+    with open(filepath, 'w') as f:
+        json.dump(createJSON(images, heatmaps, labels), f)
 
-    with open(foldername + '/' + filename, 'w') as f:
-       json.dump(createJSON(images, heatmaps, labels), f)
-
-def deserialize():
-    with open(foldername + '/' + filename, 'r') as f:
+def deserialize(path):
+    filepath = os.path.join(path, foldername, filename)
+    print('Reading file: ', filepath)
+    with open(filepath, 'r') as f:
         return json.load(f)
 
