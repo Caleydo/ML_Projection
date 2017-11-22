@@ -4,13 +4,14 @@ import json
 foldername = 'data'
 filename = 'foo.json'
 
-def createJSON(images, heatmaps, labels):
+def createJSON(images, heatmaps, labels, predictedLabels):
     instances = []
     for i in range(0, len(images)):
         instances.append({
             "input_image": images[i].tolist(),
             "heatmap": heatmaps[i].tolist(),
-            "label": labels[i]
+            "label": labels[i],
+            "predicted_label": predictedLabels[i].item()
         })
     return instances
 
@@ -18,7 +19,7 @@ def createDataFolder(foldername):
     if not os.path.exists(foldername):
         os.makedirs(foldername)
 
-def serialize(images, heatmaps, labels, path):
+def serialize(images, heatmaps, labels, predictedLabels, path):
     dataFolder = os.path.join(path, foldername)
     createDataFolder(dataFolder)
     filepath = os.path.join(dataFolder, filename)
@@ -27,7 +28,7 @@ def serialize(images, heatmaps, labels, path):
         raise ValueError('The dimensions of the input/activities/labels are not compatible')
 
     with open(filepath, 'w') as f:
-        json.dump(createJSON(images, heatmaps, labels), f)
+        json.dump(createJSON(images, heatmaps, labels, predictedLabels), f)
 
 def deserialize(path):
     filepath = os.path.join(path, foldername, filename)

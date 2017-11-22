@@ -38,8 +38,8 @@ if __name__ == '__main__':
         images = X_train[:instanceCount]
         labels = y_train[:instanceCount]
 
-        heatmaps = applyLRP(images, labels, instanceCount)
-        serialize(images, heatmaps, labels, path)
+        heatmaps, predictedLabels = applyLRP(images, labels, instanceCount)
+        serialize(images, heatmaps, labels, predictedLabels, path)
     else:
         x = deserialize(path)
         instanceCount = len(x)
@@ -47,12 +47,13 @@ if __name__ == '__main__':
         images = np.array(list((map(lambda y: y['input_image'] , x))))
         heatmaps = np.array(list(map(lambda y: y['heatmap'] , x)))
         labels = np.array(list(map(lambda y: y['label'] , x)))
+        predictedLabels = np.array(list(map(lambda y: y['predicted_label'] , x)))
 
         projectionMethod = 'pca'
         if args.projection_method:
             projectionMethod = args.projection_method
         view = View()
-        view.plotInput(images, labels, instanceCount, projectionMethod)
-        view.plotActivations(heatmaps, labels, instanceCount, projectionMethod)
+        view.plotInput(images, instanceCount, projectionMethod, labels, predictedLabels)
+        view.plotActivations(heatmaps, instanceCount, projectionMethod, labels, predictedLabels)
         view.show()
 
